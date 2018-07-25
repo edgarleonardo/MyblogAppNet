@@ -1,6 +1,6 @@
 ## What is this app for
 
-This is a blog app, is the application that is running my personal [blog](http://blog.edgarleonardo.com).
+This is a app blog, this is the application that is running my personal [blog](http://blog.edgarleonardo.com).
 
 ## System Requirements
 
