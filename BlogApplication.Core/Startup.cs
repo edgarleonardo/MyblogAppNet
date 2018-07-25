@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogApplication.Data;
+using BlogApplication.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
 
 namespace BlogApplication.Core
 {
@@ -17,6 +23,11 @@ namespace BlogApplication.Core
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+              .Enrich.FromLogContext()
+              .WriteTo.RollingFile("Logs/blog-{Date}.txt", LogEventLevel.Warning)
+              .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -31,7 +42,17 @@ namespace BlogApplication.Core
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            System.Action<DbContextOptionsBuilder> databaseOptions = options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 
+            services.AddDbContext<ApplicationDbContext>(databaseOptions);
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddLogging(loggingBuilder =>
+                loggingBuilder.AddSerilog(dispose: true));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

@@ -1,0 +1,72 @@
+﻿@using BlogApplication.Domain.Common
+@{
+    var logoImg = BlogSettings.Logo;
+    var logoUrl = "http://blog.edgarleonardo.com";
+    try
+    {
+        logoImg = Model.LogoImg;
+        logoUrl = Model.LogoUrl;
+    }
+    catch { }
+}
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="~/@logoUrl"><img src="@logoImg" alt="@BlogSettings.Title" /></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="~/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Author">About</a>
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    
+                    <li class="nav-item"><a class="nav-link" href="~/admin">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="profileLogOut(); return false;">Logoff</a></li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/account/login?ReturnUrl=%2Fadmin">Login</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" href="post.html">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Search</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+@*<header class="blog-header clearfix">
+    @*<h1 class="blog-logo"><a href="~/@logoUrl"><img src="@logoImg" alt="@BlogSettings.Title" /></a></h1>*@
+    <button class="blog-header-toggle"><i class="fa fa-navicon"></i></button>
+    <section class="blog-header-modal">
+        <button class="blog-header-toggle"><i class="fa fa-times"></i></button>
+        <nav class="blog-nav">
+            <ul>
+                <li><a href="~/">Home</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="~/admin">Admin</a></li>
+                    <li><a href="#" onclick="profileLogOut(); return false;">Logoff</a></li>
+                }
+                else
+                {
+                    <li><a href="~/account/login?ReturnUrl=%2Fadmin">Login</a></li>
+                }
+            </ul>
+        </nav>
+        <form class="blog-search" role="search" asp-controller="Blog" asp-action="Search" method="post">
+            <input type="search" id="term" name="term" placeholder="Search..." autocomplete="off">
+        </form>
+    </section>
+</header>

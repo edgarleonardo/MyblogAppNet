@@ -1,0 +1,22 @@
+﻿@using BlogApplication.Domain.Common
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>@ViewData["Title"]</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="~/admin/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/admin/css/styles.min.css" />
+</head>
+<body class="bf-account">
+  <div class="container">
+    <div class="bf-account-inner">
+      @RenderBody()
+    </div>
+    <div class="bf-account-footer">
+      <a href="http://blog.edgarleonardo.com/" target="_blank" rel="nofollow external" title="Blog @ApplicationSettings.Version"><img src="~/admin/img/logo-sm.png" alt="Blog"></a>
+    </div>
+  </div>
+  @RenderSection("Scripts", required: false)
+</body>
+</html>

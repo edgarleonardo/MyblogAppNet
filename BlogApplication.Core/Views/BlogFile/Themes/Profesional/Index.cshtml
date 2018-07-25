@@ -1,0 +1,113 @@
+﻿@using BlogApplication.Domain.Common
+@using BlogApplication.Domain.Data.Models
+@using BlogApplication.Domain.Extensions
+@model BlogPostsModel
+@inject IComponentHelper helper
+@*<section class="blog-cover" style="background-image: url('@Model.CoverImg')">
+        <div class="container">
+            <h1 class="cover-title">@BlogSettings.Title</h1>
+            <p class="cover-desc">@BlogSettings.Description</p>
+        </div>
+    </section>*@
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>@BlogSettings.Title</h1>
+                    <span class="subheading">@BlogSettings.Description</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            @if (Model.Posts != null)
+            {
+                foreach (var item in Model.Posts)
+                {
+                    if (!item.IsFeatured)
+                    {
+                        <div class="post-preview">
+                            <a href="~/@ApplicationSettings.BlogRoute@item.Slug">
+                                <h2 class="post-title">
+                                    @item.Title
+                                </h2>
+                                <h3 class="post-subtitle">
+                                    @Html.Raw(item.Content)
+                                </h3>
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#">@item.AuthorName</a>
+                                @item.Published.ToFriendlyDateString()
+                            </p>
+                        </div>
+                        <hr>
+                    }
+                }
+            }
+            @await helper.InvokeAsync(Component, "NewPostList", new { listType = 1, count = 2 })
+        </div>
+    </div>
+</div>
+@*<section class="container">
+        @await helper.InvokeAsync(Component, "NewPostList", new { listType = 1, count = 2 })
+    </section>*@
+
+@*@if (Model.Posts != null)
+    {
+        foreach (var item in Model.Posts)
+        {
+            if (!item.IsFeatured)
+            {
+                <article class="post">
+                    <section class="container">
+                        <header class="post-header">
+                            <h2 class="post-title"><a href="~/@ApplicationSettings.BlogRoute@item.Slug">@item.Title</a></h2>
+                            <div class="post-meta">
+                                <a href="~/@ApplicationSettings.BlogRoute@item.BlogSlug">
+                                    <img class="post-meta-img" src="@item.Avatar" alt="@item.AuthorName" />
+                                    <span class="post-meta-author">@item.AuthorName</span>
+                                </a>
+                                <time class="post-meta-time">@item.Published.ToFriendlyDateString()</time>
+                                @if (item.PostCategories != null && item.PostCategories.Count > 0)
+                                {
+                                    <span class="post-meta-category">
+                                        in
+                                        @foreach (var cat in item.PostCategories)
+                                        {
+                                            <a href="~/@ApplicationSettings.BlogRoute@item.BlogSlug/@cat">@cat</a>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                        </header>
+                        <div class="post-content">
+                            <p class="post-excerpt">@Html.Raw(item.Content)</p>
+                            <a class="post-more" href="~/@ApplicationSettings.BlogRoute@item.Slug">Read More</a>
+                        </div>
+                    </section>
+                </article>
+            }
+        }
+    }*@
+
+@*<section class="container">
+        @try
+        {
+            @await Component.InvokeAsync("Newsletter")
+        }
+        catch (Exception ex)
+        {
+            <h4>Error loading widget</h4>W
+            <div>@ex.Message</div>
+        }
+    </section>*@
+
+
+@Html.Partial($"~/{ApplicationSettings.BlogThemesFolder}/Profesional/_Shared/_Pager.cshtml", Model.Pager)
+
